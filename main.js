@@ -35,8 +35,15 @@ var app = http.createServer(function(request,response){
         }); */
         db.query(`SELECT * FROM topic`, function(error, topics){
           console.log(topics);
+          var title = 'Welcome';
+          var description = 'Hello, Node.js';
+          var list = template.list(topics);
+          var html = template.HTML(title, list,
+            `<h2>${title}</h2>${description}`,
+            `<a href="/create">create</a>`
+          );
           response.writeHead(200); //웹페이지로써 꼭 알려줘야하는 중요한 코드
-          response.end('Success');
+          response.end(html);
         })
       } else {//HTML, CSS, JavaScript 눌렀을때. id값이 있는 애
         fs.readdir('./data', function(error, filelist){
