@@ -63,24 +63,30 @@ var app = http.createServer(function (request, response) {
     }
   } else if (pathname === '/create') {//create 눌렀을 때
     db.query(`SELECT * FROM topic`, function (error, topics) {
-      var title = 'Create';
-      var list = template.list(topics);
-      var html = template.HTML(title, list,
-        `
-          <form action="/create_process" method="post">
-            <p><input type="text" name="title" placeholder="title"></p>
-            <p>
-              <textarea name="description" placeholder="description"></textarea>
-            </p>
-            <p>
-              <input type="submit">
-            </p>
-          </form>
-          `,
-        `<a href="/create">create</a>`
-      );
-      response.writeHead(200); //웹페이지로써 꼭 알려줘야하는 중요한 코드
-      response.end(html);
+      db.query(`SELECT * FROM author`, function (error2, authors) {
+
+        var title = 'Create';
+        var list = template.list(topics);
+        var html = template.HTML(title, list,
+          `
+            <form action="/create_process" method="post">
+              <p><input type="text" name="title" placeholder="title"></p>
+              <p>
+                <textarea name="description" placeholder="description"></textarea>
+              </p>
+              <p>
+                ${template.authorSelect(authors)}
+              </p>
+              <p>
+                <input type="submit">
+              </p>
+            </form>
+            `,
+          `<a href="/create">create</a>`
+        );
+        response.writeHead(200); //웹페이지로써 꼭 알려줘야하는 중요한 코드
+        response.end(html);
+      });
     });
   } else if (pathname === '/create_process') {//create하고 제출 버튼 눌렀을 때
     var body = '';
@@ -92,7 +98,7 @@ var app = http.createServer(function (request, response) {
       db.query(`
       INSERT INTO topic (title, description, created, author_id)
         VALUES (?, ?, NOW(), ?)`,
-        [post.title, post.description, 1], function (error, result) {
+        [post.title, post.description, post.author], function (error, result) {
           if (error) {
             throw error;
           }
