@@ -2,8 +2,8 @@ var http = require('http');
 var url = require('url');
 var qs = require('querystring');
 var template = require('./lib/template.js');
-var db = require('./lib/db.js')
-
+var db = require('./lib/db.js');
+var topic = require('./lib/topic.js');
 
 var app = http.createServer(function (request, response) {
   var _url = request.url;
@@ -12,17 +12,7 @@ var app = http.createServer(function (request, response) {
   if (pathname === '/') {
     //home일때의 경우 . web눌렀을 때. 홈으로 들어왔을 때.
     if (queryData.id === undefined) {
-      db.query(`SELECT * FROM topic`, function (error, topics) {
-        var title = 'Welcome';
-        var description = 'Hello, Node.js';
-        var list = template.list(topics);
-        var html = template.HTML(title, list,
-          `<h2>${title}</h2>${description}`,
-          `<a href="/create">create</a>`
-        );
-        response.writeHead(200); //웹페이지로써 꼭 알려줘야하는 중요한 코드
-        response.end(html);
-      });
+      topic.home(request, response);
     } else {//HTML, CSS, JavaScript 눌렀을때. id값이 있는 애
       db.query(`SELECT * FROM topic`, function (error, topics) {
         if (error) {
