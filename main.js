@@ -35,6 +35,10 @@ var app = http.createServer(function (request, response) {
     author.create_process(request, response);
   } else if (pathname === '/author/update') {//author 테이블의 update 눌렀을 때
     author.update(request, response);
+  } else if (pathname === '/author/update_process') {//author 테이블의 update 눌렀을 때
+    author.update_process(request, response);
+  } else if (pathname === '/author/delete_process') {//author 테이블의 delete 눌렀을 때
+    author.delete_process(request, response);
   } else {
     response.writeHead(404);
     response.end('Not found');
