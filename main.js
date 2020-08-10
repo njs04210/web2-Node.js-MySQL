@@ -29,10 +29,12 @@ var app = http.createServer(function (request, response) {
     topic.update_process(request, response);
   } else if (pathname === '/delete_process') {//delete 눌렀을 때
     topic.delete_process(request, response);
-  } else if (pathname === '/author') {//delete 눌렀을 때
+  } else if (pathname === '/author') {//author 눌렀을때
     author.home(request, response);
-  } else if (pathname === '/author/create_process') {//delete 눌렀을 때
+  } else if (pathname === '/author/create_process') {//author 정보입력후 create 눌렀을 때
     author.create_process(request, response);
+  } else if (pathname === '/author/update') {//author 테이블의 update 눌렀을 때
+    author.update(request, response);
   } else {
     response.writeHead(404);
     response.end('Not found');
