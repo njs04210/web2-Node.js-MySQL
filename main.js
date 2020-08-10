@@ -31,6 +31,8 @@ var app = http.createServer(function (request, response) {
     topic.delete_process(request, response);
   } else if (pathname === '/author') {//delete 눌렀을 때
     author.home(request, response);
+  } else if (pathname === '/author/create_process') {//delete 눌렀을 때
+    author.create_process(request, response);
   } else {
     response.writeHead(404);
     response.end('Not found');
